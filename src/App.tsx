@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ThemeContext, themes } from "./Contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
 import LanguageContext from "./Contexts/LanguageContext";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -37,6 +38,7 @@ function App() {
     <LanguageContext.Provider value={languageContextValue}>
       <ThemeContext.Provider value={themeContextValue}>
         <SiteNavBar />
+        <Dashboard/>
       </ThemeContext.Provider>
     </LanguageContext.Provider>
   );
