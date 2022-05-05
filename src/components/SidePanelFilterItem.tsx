@@ -11,10 +11,6 @@ const SidePanelFilterItem = ({
   selectionItems,
   inputType,
 }: SidePanelFilterPropType) => {
-
-
-
-
   return (
     <div className="card">
       <div className="card-body">
@@ -36,16 +32,26 @@ const SidePanelFilterItem = ({
             })) ||
             (inputType === "select" && (
               <div className="card-body p-0">
-                <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button
+                  className="btn btn-primary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   {selectionItems[0]}
                 </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  {
-                    selectionItems.map(item => <li key={item} className="dropdown-item">{item}</li>)
-                  }
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                >
+                  {selectionItems.map((item) => (
+                    <li key={item} className="dropdown-item">
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
-
             ))}
         </div>
       </div>

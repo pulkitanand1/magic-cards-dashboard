@@ -1,9 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { useAppDispatch } from "../app/hook";
+import LanguageContext from "../Contexts/LanguageContext";
 import { ThemeContext } from "../Contexts/ThemeContext";
+import { getCardsForDashboardAsync } from "../features/magicCards/cardsDashboardSlice";
 
 export default function SiteNavBar() {
+  const dispatch = useAppDispatch();
   const themeContext = useContext(ThemeContext);
-  const  [selectedLanguage, setSelectedLanguage] = useState("English");
+  const { selectedLanguage, changeSelectedLanguage } =
+    useContext(LanguageContext);
 
   const theme = themeContext.isDark ? "dark" : "light";
 
@@ -14,14 +19,21 @@ export default function SiteNavBar() {
     themeContext.toggleTheme();
   }
 
-  const languagesList = ["English", "French", "Chinese Simplified"];
+  const languagesList = [
+    "English",
+    "French",
+    "Chinese Simplified",
+    "Russian",
+    "Japanese",
+    "German",
+  ];
 
   function handleLanguageSelection(value: string) {
-    setSelectedLanguage(value);
+    changeSelectedLanguage(value);
   }
 
-  function handleSearchOperation(){
-    console.log();
+  function handleSearchOperation() {
+    dispatch(getCardsForDashboardAsync());
   }
 
   return (
@@ -41,7 +53,7 @@ export default function SiteNavBar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-          <li className="nav-item">
+            <li className="nav-item">
               <button
                 className={`btn btn-outline btn-${toggleButtonTheme} border-${toggleButtonTheme}`}
                 onClick={handleToggleThemeButtonClick}
@@ -74,14 +86,16 @@ export default function SiteNavBar() {
                 ))}
               </ul>
             </li>
-
           </ul>
         </div>
 
-        <form className="d-flex" onSubmit={(e) => {
-          e.preventDefault();
-          handleSearchOperation();
-        }}>
+        <form
+          className="d-flex"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearchOperation();
+          }}
+        >
           <input
             className="form-control me-2"
             type="search"

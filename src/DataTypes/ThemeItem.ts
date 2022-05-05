@@ -1,4 +1,4 @@
-export interface ThemeItem{
-    foreground : string;
-    background : string;
+export interface ThemeItem {
+  foreground: string;
+  background: string;
 }

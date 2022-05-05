@@ -1,20 +1,14 @@
-import { DashboardFilters } from "../../DataTypes/DashboardFilters";
+import axios from "axios";
 import { MagicCardItem } from "../../DataTypes/MagicCardItem";
 
-export async function fetchCardsAfterFilterAsync(filters: DashboardFilters) : Promise<MagicCardItem[]>{
-    // This URL is case sensitive - changing "pageSize" to "pagesize" will return data with default page size
-    return await fetch(`https://api.magicthegathering.io/v1/cards?pageSize=${filters.pageSize}`)
-    .then(response => {
-        if(!response.ok){
-            throw new Error(response.statusText);
-        }
-        return response.json();
+export async function fetchCardsAsync(): Promise<MagicCardItem[]> {
+  const url = `https://api.magicthegathering.io/v1/cards`;
+  return await axios(url)
+    .then((json) => {
+      if (json) {
+        return json.data.cards;
+      }
+      return [];
     })
-    .then(result => {
-        if(result){
-            return result.cards;
-        }
-        return [];
-    })
-    .catch(error => console.error(error));
+    .catch((error) => console.error(error));
 }

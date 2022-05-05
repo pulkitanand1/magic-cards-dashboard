@@ -1,6 +1,6 @@
 import { ThemeItem } from "./ThemeItem";
 
-export interface ThemeType{
-    light : ThemeItem,
-    dark : ThemeItem
+export interface ThemeType {
+  light: ThemeItem;
+  dark: ThemeItem;
 }
