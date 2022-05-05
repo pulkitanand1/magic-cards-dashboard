@@ -1,76 +1,95 @@
-interface SidePanelFilterPropType {
+export interface CheckboxCardSidePanelProps {
   filterLabel: string;
-  handleSelection: (items: string[]) => void;
-  selectionItems: string[];
-  inputType: string;
+  handleCheckedValues: (items: string[]) => void;
+  optionValues: string[];
+  checkedItems: string[];
 }
 
-const SidePanelFilterItem = ({
-  filterLabel,
-  handleSelection,
-  selectionItems,
-  inputType,
-}: SidePanelFilterPropType) => {
+export const CheckboxCardSidePanel = (props: CheckboxCardSidePanelProps) => {
+  const _checkedItems = [...props.checkedItems]; // To avoid modifying the state
+  const { filterLabel, optionValues, handleCheckedValues } = props;
+  const handleCheckboxEvent = (isChecked: boolean, checkedValue: string) => {
+    const idx = _checkedItems.indexOf(checkedValue);
+    if (isChecked && idx === -1) {
+      _checkedItems.push(checkedValue);
+    } else if (isChecked == false && idx !== -1) {
+      _checkedItems.splice(idx, 1);
+    }
+    handleCheckedValues(_checkedItems);
+  };
+
   return (
     <div className="card">
       <div className="card-body">
         <h5 className="class-title">{filterLabel}</h5>
         <div className="row form-check card-text">
-          {(inputType === "checkbox" &&
-            selectionItems.map((si) => {
-              return (
-                <label key={si}>
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value={si}
-                    defaultChecked={true}
-                  />
-                  {si}
-                </label>
-              );
-            })) ||
-            (inputType === "select" && (
-              <div className="card-body p-0">
-                <button
-                  className="btn btn-primary dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {selectionItems[0]}
-                </button>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton1"
-                >
-                  {selectionItems.map((item) => (
-                    <li key={item} className="dropdown-item">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {optionValues.map((ov) => {
+            return (
+              <label key={ov}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={ov}
+                  defaultChecked={_checkedItems.indexOf(ov) >= 0}
+                  onChange={(e) => handleCheckboxEvent(e.target.checked, ov)}
+                />
+                {ov}
+              </label>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-interface CheckboxCardSidePanelProps {
+export interface SelectionCardSidePanelProps {
   filterLabel: string;
-  handleSelection: (items: string[]) => void;
-  selectionItems: string[];
+  handleSelection: (selectedValue: string) => void;
+  optionValues: string[];
+  selectedItem: string;
 }
 
-export const CheckboxCardSidePanel = (props: CheckboxCardSidePanelProps) => {
-  const passThruProps = { ...props, inputType: "checkbox" };
-  return <SidePanelFilterItem {...passThruProps} />;
-};
+export const SelectionCardSidePanel = (props: SelectionCardSidePanelProps) => {
+  const { filterLabel, optionValues, selectedItem, handleSelection } = props;
 
-export const SelectionCardSidePanel = (props: CheckboxCardSidePanelProps) => {
-  const passThruProps = { ...props, inputType: "select" };
-  return <SidePanelFilterItem {...passThruProps} />;
+  const handleDropDownEvent = (selectedValue: string) => {
+    handleSelection(selectedValue);
+  };
+  return (
+    <div className="card">
+      <div className="card-body">
+        <h5 className="class-title">{filterLabel}</h5>
+        <div className="row form-check card-text">
+          {
+            <div className="card-body p-0">
+              <button
+                className="btn btn-primary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {selectedItem}
+              </button>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1"
+              >
+                {optionValues.map((item) => (
+                  <li
+                    key={item}
+                    className="dropdown-item"
+                    onClick={() => handleDropDownEvent(item)}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  );
 };

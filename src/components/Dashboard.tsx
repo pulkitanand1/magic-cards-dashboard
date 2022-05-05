@@ -1,113 +1,34 @@
+import "./Dashboard.scss";
 import { useContext, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hook";
+import { useAppSelector } from "../app/hook";
 import LanguageContext from "../Contexts/LanguageContext";
 import { DashboardFilters } from "../DataTypes/DashboardFilters";
-import { MagicCardItem } from "../DataTypes/MagicCardItem";
-import {
-  getCardsForDashboardAsync,
-  selectCards,
-} from "../features/magicCards/cardsDashboardSlice";
-import {
-  CheckboxCardSidePanel,
-  SelectionCardSidePanel,
-} from "./SidePanelFilterItem";
-import "./Dashboard.scss";
+import { selectCards } from "../features/magicCards/cardsDashboardSlice";
 import PaginationFooter from "./PaginationFooter";
+import SidePanel from "./SidePanel";
+import {
+  applyFilterOnMagicCards,
+  getPaginatedResult,
+} from "../utils/DataManipulators";
 
 export default function Dashboard() {
-  const dispatch = useAppDispatch();
   const { selectedLanguage } = useContext(LanguageContext);
 
   const intialFilterState: DashboardFilters = {
     language: "English",
     pageSize: 50,
     colors: [],
-    rarity: [],
-    superTypes: [],
+    rarity: "All",
+    superType: "All",
   };
   const [filters, setFilters] = useState(intialFilterState);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredCards = (cards: MagicCardItem[]) => {
-    // Only cards that have foreign names are allowed
-    let _cards = [...cards].filter((card) => card.foreignNames !== undefined);
-
-    _cards = _cards.map((card, idx) => {
-      const _card = { ...card };
-
-      if (selectedLanguage !== "English") {
-        const foreignNameByLanguage = card.foreignNames.find(
-          (fn) => fn.language === selectedLanguage
-        );
-        if (foreignNameByLanguage) {
-          _card.name = foreignNameByLanguage.name;
-        }
-      }
-      _card.seqNo = idx + 1;
-      return _card;
-    });
-    _cards.sort((a, b) => a.layout.localeCompare(b.layout));
-    return _cards;
-  };
-
-  /**
-   * Slices the result according to page size in filter.
-   * @param cards Filtered cards to be paginated
-   * @returns paginated cards
-   */
-  const paginatedResult = (filteredCards: MagicCardItem[]) => {
-      const startIndex = filters.pageSize * (currentPage - 1);
-      const endIndex = startIndex + filters.pageSize;
-
-      if(endIndex > filteredCards.length){
-        return filteredCards.slice(startIndex, filteredCards.length);
-      }
-      return filteredCards.slice(startIndex, endIndex); 
-  }
-
-  const magicCards = filteredCards(useAppSelector(selectCards)); // InitialState
-
-  /**
-   * Dispatches filteration on the basis of selected colors.
-   * @param colors Selected Colors on the left pane
-   */
-  const handleColorSelection = (colors: string[]) => {
-    filters.colors = colors;
-    setFilters(filters);
-  };
-
-  const noOfPages = Math.ceil(magicCards.length / filters.pageSize);
-
-  /**
-   * Sets the currentPageNumber which changes the records shown in grid.
-   * @param pageValue value passed by the pagination button.
-   */
-  const handlePaginationButtonClick = (pageValue: number) => {
-    // Can't do anything if there's only one page.
-    if (noOfPages <= 1) {
-      return;
-    }
-    // Previous page
-    if (pageValue === -1) {
-      // If it's the first page, previous page navigation shouldn't be allowed.
-      if (currentPage !== 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    }
-    // Next page or any page value
-    else if (pageValue > 0) {
-      // If the end has not been reached
-      if (pageValue <= noOfPages) {
-        setCurrentPage(pageValue);
-      }
-    }
-  };
-
-  const props = {
-    handleSelection: handleColorSelection,
-    filterLabel: "Colors",
-    selectionItems: ["black", "white"],
-  };
+  const magicCards = applyFilterOnMagicCards(
+    useAppSelector(selectCards),
+    selectedLanguage,
+    filters
+  ); // InitialState
 
   /**
    * When language is changed in the context.
@@ -119,40 +40,54 @@ export default function Dashboard() {
     }
   }, [selectedLanguage]);
 
-  const handleApplyClick = () => {
-    setCurrentPage(1);
-    dispatch(getCardsForDashboardAsync());
+  const sidePanelPassThruProps = {
+    setCurrentPage,
+    filters,
+    setFilters,
   };
 
-  const paginationPassThruProps = {noOfPages, currentPage, handlePaginationButtonClick };
+  const noOfPages = Math.ceil(magicCards.length / filters.pageSize);
+  const paginationPassThruProps = {
+    noOfPages,
+    currentPage,
+    setCurrentPage,
+  };
+
+  const paginatedResult = getPaginatedResult(magicCards, filters, currentPage);
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-xl-2 col-md-3 mt-2">
-          <CheckboxCardSidePanel {...props} />
-          <SelectionCardSidePanel {...props} />
-          <button
-            className="btn btn-primary mt-3 justify-content-center"
-            onClick={handleApplyClick}
-          >
-            Apply
-          </button>
-        </div>
+        <SidePanel {...sidePanelPassThruProps} />
         <div className="col-xl-10 col-md-9">
+          <h3 className="text-dark p-2">
+            {paginatedResult.length === 0
+              ? "No Records found"
+              : `Showing ${filters.pageSize} records. Found:  ${magicCards.length} records.`}
+          </h3>
           <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Layout</th>
-                  <th scope="col">Rarity</th>
-                  <th scope="col">Details</th>
+                  <th scope="col" className="col-md-1">
+                    #
+                  </th>
+                  <th scope="col" className="col-l">
+                    Name
+                  </th>
+                  <th scope="col" className="col-md-2">
+                    Layout
+                  </th>
+                  <th scope="col" className="col-md-2">
+                    Rarity
+                  </th>
+                  <th scope="col" className="col-md-2">
+                    Card Details
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedResult(magicCards).map((card) => {
+                {paginatedResult.map((card) => {
                   return (
                     <tr key={card.id}>
                       <td>{card.seqNo}</td>
@@ -170,7 +105,7 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-          <PaginationFooter {...paginationPassThruProps}/>
+          <PaginationFooter {...paginationPassThruProps} />
         </div>
       </div>
     </div>

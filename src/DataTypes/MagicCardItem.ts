@@ -6,5 +6,7 @@ export interface MagicCardItem {
   name: string;
   rarity: string;
   layout: string;
+  supertypes: string[];
+  colors: string[];
   foreignNames: ForeignNamesItem[];
 }

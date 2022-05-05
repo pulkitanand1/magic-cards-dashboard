@@ -1,11 +1,36 @@
 interface PaginatorFooterProps {
   noOfPages: number;
   currentPage: number;
-  handlePaginationButtonClick: (pageNo: number) => void;
+  setCurrentPage: (pageNo: number) => void;
 }
 
 const PaginationFooter = (props: PaginatorFooterProps) => {
-  const { currentPage, noOfPages, handlePaginationButtonClick } = { ...props };
+  const { currentPage, noOfPages, setCurrentPage } = { ...props };
+
+  /**
+   * Sets the currentPageNumber which changes the records shown in grid.
+   * @param pageValue value passed by the pagination button.
+   */
+  const handlePaginationButtonClick = (pageValue: number) => {
+    // Can't do anything if there's only one page.
+    if (noOfPages <= 1) {
+      return;
+    }
+    // Previous page
+    if (pageValue === -1) {
+      // If it's the first page, previous page navigation shouldn't be allowed.
+      if (currentPage !== 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    }
+    // Next page or any page value
+    else if (pageValue > 0) {
+      // If the end has not been reached
+      if (pageValue <= noOfPages) {
+        setCurrentPage(pageValue);
+      }
+    }
+  };
   return (
     <nav aria-label="...">
       <ul className="pagination m-2">

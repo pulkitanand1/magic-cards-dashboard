@@ -1,8 +1,10 @@
+import React from "react";
 import { useContext } from "react";
 import { useAppDispatch } from "../app/hook";
 import LanguageContext from "../Contexts/LanguageContext";
 import { ThemeContext } from "../Contexts/ThemeContext";
 import { getCardsForDashboardAsync } from "../features/magicCards/cardsDashboardSlice";
+import DropDownData from "../utils/DropdownData";
 
 export default function SiteNavBar() {
   const dispatch = useAppDispatch();
@@ -19,14 +21,7 @@ export default function SiteNavBar() {
     themeContext.toggleTheme();
   }
 
-  const languagesList = [
-    "English",
-    "French",
-    "Chinese Simplified",
-    "Russian",
-    "Japanese",
-    "German",
-  ];
+  const languagesList = DropDownData.languagesList;
 
   function handleLanguageSelection(value: string) {
     changeSelectedLanguage(value);
