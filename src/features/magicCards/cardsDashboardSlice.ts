@@ -4,7 +4,7 @@ import { DashboardFilters } from '../../DataTypes/DashboardFilters';
 import { MagicCardItem } from '../../DataTypes/MagicCardItem';
 import { fetchCardsAfterFilterAsync } from './magicCardsAPI';
 
-interface CardsDashboardState{
+export interface CardsDashboardState{
     value: MagicCardItem[];
     status: 'idle' | 'loading' | 'failed'
 }
@@ -20,6 +20,7 @@ export const getCardsForDashboardAsync = createAsyncThunk(
     async (filters: DashboardFilters) => {
         const magicCards = await fetchCardsAfterFilterAsync(filters)
                 .then((data) => data.map(d => d as MagicCardItem));
+console.log("Data fetching done");
         return magicCards;
     }
 )

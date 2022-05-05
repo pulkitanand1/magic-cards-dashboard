@@ -1,10 +1,9 @@
-import { useContext } from "react";
-import LanguageContext from "../Contexts/LanguageContext";
+import { useContext, useState } from "react";
 import { ThemeContext } from "../Contexts/ThemeContext";
 
 export default function SiteNavBar() {
   const themeContext = useContext(ThemeContext);
-  const {selectedLanguage, changeSelectedLanguage} = useContext(LanguageContext);
+  const  [selectedLanguage, setSelectedLanguage] = useState("English");
 
   const theme = themeContext.isDark ? "dark" : "light";
 
@@ -18,7 +17,7 @@ export default function SiteNavBar() {
   const languagesList = ["English", "French", "Chinese Simplified"];
 
   function handleLanguageSelection(value: string) {
-    changeSelectedLanguage(value);
+    setSelectedLanguage(value);
   }
 
   function handleSearchOperation(){

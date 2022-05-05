@@ -2,12 +2,10 @@ import "./App.scss";
 import React, { useEffect, useState } from "react";
 import { ThemeContext, themes } from "./Contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
-import LanguageContext from "./Contexts/LanguageContext";
 import Dashboard from "./components/Dashboard";
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("English");
 
   const currentTheme = isDarkTheme ? themes.dark : themes.light;
 
@@ -25,22 +23,12 @@ function App() {
     body[0].style.background = currentTheme.background;
   }, [isDarkTheme]);
 
-  const handleLanguageSelection = (language: string) => {
-    setSelectedLanguage(language);
-  };
-
-  const languageContextValue = {
-    selectedLanguage: selectedLanguage,
-    changeSelectedLanguage: handleLanguageSelection,
-  };
 
   return (
-    <LanguageContext.Provider value={languageContextValue}>
       <ThemeContext.Provider value={themeContextValue}>
         <SiteNavBar />
         <Dashboard/>
       </ThemeContext.Provider>
-    </LanguageContext.Provider>
   );
 }
 
