@@ -63,49 +63,53 @@ export default function Dashboard() {
           <h3 className="text-dark p-2">
             {paginatedResult.length === 0
               ? "No Records found"
-              : `Showing ${filters.pageSize} records. Found:  ${magicCards.length} records.`}
+              : `Total: ${magicCards.length} records`}
           </h3>
-          <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col" className="col-md-1">
-                    #
-                  </th>
-                  <th scope="col" className="col-l">
-                    Name
-                  </th>
-                  <th scope="col" className="col-md-2">
-                    Layout
-                  </th>
-                  <th scope="col" className="col-md-2">
-                    Rarity
-                  </th>
-                  <th scope="col" className="col-md-2">
-                    Card Details
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedResult.map((card) => {
-                  return (
-                    <tr key={card.id}>
-                      <td>{card.seqNo}</td>
-                      <td>{card.name}</td>
-                      <td>{card.layout}</td>
-                      <td>{card.rarity}</td>
-                      <td>
-                        <button className="btn btn-outline-primary">
-                          Details
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <PaginationFooter {...paginationPassThruProps} />
+          {paginatedResult.length > 0 && (
+            <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col" className="col-md-1">
+                      #
+                    </th>
+                    <th scope="col" className="col-l">
+                      Name
+                    </th>
+                    <th scope="col" className="col-md-2">
+                      Layout
+                    </th>
+                    <th scope="col" className="col-md-2">
+                      Rarity
+                    </th>
+                    <th scope="col" className="col-md-2">
+                      Card Details
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedResult.map((card) => {
+                    return (
+                      <tr key={card.id}>
+                        <td>{card.seqNo}</td>
+                        <td>{card.name}</td>
+                        <td>{card.layout}</td>
+                        <td>{card.rarity}</td>
+                        <td>
+                          <button className="btn btn-outline-primary">
+                            Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {paginatedResult.length > 0 && noOfPages > 1 && (
+            <PaginationFooter {...paginationPassThruProps} />
+          )}
         </div>
       </div>
     </div>
