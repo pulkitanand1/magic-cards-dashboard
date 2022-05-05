@@ -12,6 +12,7 @@ import {
   SelectionCardSidePanel,
 } from "./SidePanelFilterItem";
 import "./Dashboard.scss";
+import PaginationFooter from "./PaginationFooter";
 
 export default function Dashboard() {
   const dispatch = useAppDispatch();
@@ -31,8 +32,6 @@ export default function Dashboard() {
     // Only cards that have foreign names are allowed
     let _cards = [...cards].filter((card) => card.foreignNames !== undefined);
 
-    // noOfPages is only updated when data has been fetched.
-
     _cards = _cards.map((card, idx) => {
       const _card = { ...card };
 
@@ -50,6 +49,21 @@ export default function Dashboard() {
     _cards.sort((a, b) => a.layout.localeCompare(b.layout));
     return _cards;
   };
+
+  /**
+   * Slices the result according to page size in filter.
+   * @param cards Filtered cards to be paginated
+   * @returns paginated cards
+   */
+  const paginatedResult = (filteredCards: MagicCardItem[]) => {
+      const startIndex = filters.pageSize * (currentPage - 1);
+      const endIndex = startIndex + filters.pageSize;
+
+      if(endIndex > filteredCards.length){
+        return filteredCards.slice(startIndex, filteredCards.length);
+      }
+      return filteredCards.slice(startIndex, endIndex); 
+  }
 
   const magicCards = filteredCards(useAppSelector(selectCards)); // InitialState
 
@@ -110,6 +124,8 @@ export default function Dashboard() {
     dispatch(getCardsForDashboardAsync());
   };
 
+  const paginationPassThruProps = {noOfPages, currentPage, handlePaginationButtonClick };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -136,7 +152,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {magicCards.map((card) => {
+                {paginatedResult(magicCards).map((card) => {
                   return (
                     <tr key={card.id}>
                       <td>{card.seqNo}</td>
@@ -154,60 +170,7 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-          <nav aria-label="...">
-            <ul className="pagination m-2">
-              <li
-                className={
-                  currentPage === 1 || noOfPages === 1
-                    ? "page-item disabled"
-                    : "page-item"
-                }
-              >
-                <a
-                  className="page-link"
-                  onClick={() => handlePaginationButtonClick(-1)}
-                >
-                  Previous
-                </a>
-              </li>
-
-              {[
-                Array.from({ length: noOfPages }, (_, i) => i + 1).map(
-                  (pageNo) => {
-                    return (
-                      <li
-                        key={pageNo}
-                        className={
-                          currentPage === pageNo
-                            ? "page-item active"
-                            : "page-item"
-                        }
-                      >
-                        <a
-                          className="page-link"
-                          onClick={() => handlePaginationButtonClick(pageNo)}
-                        >
-                          {pageNo}
-                        </a>
-                      </li>
-                    );
-                  }
-                ),
-              ]}
-              <li
-                className={
-                  currentPage === noOfPages ? "page-item disabled" : "page-item"
-                }
-              >
-                <a
-                  className="page-link"
-                  onClick={() => handlePaginationButtonClick(currentPage + 1)}
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
+          <PaginationFooter {...paginationPassThruProps}/>
         </div>
       </div>
     </div>
