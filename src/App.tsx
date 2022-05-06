@@ -5,6 +5,10 @@ import SiteNavBar from "./components/SiteNavBar";
 import Dashboard from "./components/Dashboard";
 import LanguageContext from "./contexts/LanguageContext";
 import { DashboardFilters } from "./dataTypes/DashboardFilters";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MagicCardDetailsPage from "./components/MagicCardDetailsPage";
+import { useAppDispatch } from "./app/hook";
+import { getDetailsForCardAsync } from "./features/magicCards/cardDetailsSlice";
 
 function App() {
   const intialFilterState: DashboardFilters = {
@@ -13,13 +17,14 @@ function App() {
     colors: [],
     rarity: "All",
     superType: "All",
-    searchText: ""
+    searchText: "",
   };
   const [filters, setFilters] = useState(intialFilterState);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [enableSearchForm, setEnableSearchForm] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isDetailLoaded, setIsDetailLoaded] = useState(false);
 
   const currentTheme = isDarkTheme ? themes.dark : themes.light;
 
@@ -47,25 +52,51 @@ function App() {
   };
 
   const handleSearchButtonClick = (searchText: string) => {
-    const newFilters = {...filters};
+    const newFilters = { ...filters };
     newFilters.searchText = searchText;
     setFilters(newFilters);
   };
 
   const siteNavBarPassThruProps = { enableSearchForm, handleSearchButtonClick };
+
+  const fetchCardDetails = (id: string) => {
+    setIsDetailLoaded(false);
+    dispatch(getDetailsForCardAsync(id)).then(() => setIsDetailLoaded(true));
+  };
+
   const dashboardPassThruProps = {
     filters,
     setFilters,
     currentPage,
-    setCurrentPage
+    setCurrentPage,
+    fetchCardDetails,
   };
+
+  const cardDetailPassThruProps = {
+    isDetailLoaded,
+  };
+
+  const dispatch = useAppDispatch();
+
   return (
-    <LanguageContext.Provider value={languageContextValue}>
-      <ThemeContext.Provider value={themeContextValue}>
-        <SiteNavBar {...siteNavBarPassThruProps} />
-        <Dashboard {...dashboardPassThruProps} />
-      </ThemeContext.Provider>
-    </LanguageContext.Provider>
+    <BrowserRouter>
+      <LanguageContext.Provider value={languageContextValue}>
+        <ThemeContext.Provider value={themeContextValue}>
+          <SiteNavBar {...siteNavBarPassThruProps} />
+          <Routes>
+            <Route
+              path="/"
+              element={<Dashboard {...dashboardPassThruProps} />}
+            />
+
+            <Route
+              path="/magicCardDetails"
+              element={<MagicCardDetailsPage {...cardDetailPassThruProps} />}
+            />
+          </Routes>
+        </ThemeContext.Provider>
+      </LanguageContext.Provider>
+    </BrowserRouter>
   );
 }
 

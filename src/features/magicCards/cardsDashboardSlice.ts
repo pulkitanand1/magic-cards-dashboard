@@ -23,7 +23,7 @@ export const getCardsForDashboardAsync = createAsyncThunk(
   }
 );
 
-export const cardsDashboardSlice = createSlice({
+const cardsDashboardSlice = createSlice({
   name: "magicCards",
   initialState,
   reducers: {},

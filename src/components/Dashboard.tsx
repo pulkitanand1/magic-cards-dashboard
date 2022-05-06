@@ -1,5 +1,5 @@
 import "./Dashboard.scss";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useAppSelector } from "../app/hook";
 import LanguageContext from "../contexts/LanguageContext";
 import { selectCards } from "../features/magicCards/cardsDashboardSlice";
@@ -10,17 +10,20 @@ import {
   getPaginatedResult,
 } from "../utils/DataManipulators";
 import { DashboardFilters } from "../dataTypes/DashboardFilters";
+import { Link } from "react-router-dom";
 
 interface DashboardProps {
   filters: DashboardFilters;
   setFilters: (modifiedFilterData: DashboardFilters) => void;
   currentPage: number;
   setCurrentPage: (pageNo: number) => void;
+  fetchCardDetails: (id: string) => void;
 }
 
 export default function Dashboard(props: DashboardProps) {
   const { selectedLanguage } = useContext(LanguageContext);
-  const { filters, setFilters, currentPage, setCurrentPage } =
+
+  const { filters, setFilters, currentPage, setCurrentPage, fetchCardDetails } =
     props;
 
   const magicCards = applyFilterOnMagicCards(
@@ -54,18 +57,26 @@ export default function Dashboard(props: DashboardProps) {
 
   const paginatedResult = getPaginatedResult(magicCards, filters, currentPage);
 
+  const gridRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="container-fluid">
       <div className="row">
         <SidePanel {...sidePanelPassThruProps} />
         <div className="col-xl-10 col-md-9">
-          <h3 className="text-dark p-2">
-            {paginatedResult.length === 0
-              ? "No Records found. Try searching or modify filters."
-              : `Total: ${magicCards.length} records`}
-          </h3>
+          <div>
+            <h3 className="text-dark p-1">
+              {paginatedResult.length === 0
+                ? "No Records found. Try searching or modify filters."
+                : `Total: ${magicCards.length} records`}
+            </h3>
+          </div>
+
           {paginatedResult.length > 0 && (
-            <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
+            <div
+              ref={gridRef}
+              className="magicCardsGrid table-responsive border border-primary p-1 m-2"
+            >
               <table className="table">
                 <thead>
                   <tr>
@@ -81,9 +92,6 @@ export default function Dashboard(props: DashboardProps) {
                     <th scope="col" className="col-md-2">
                       Rarity
                     </th>
-                    <th scope="col" className="col-md-2">
-                      Card Details
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,14 +99,16 @@ export default function Dashboard(props: DashboardProps) {
                     return (
                       <tr key={card.id}>
                         <td>{card.seqNo}</td>
-                        <td>{card.name}</td>
+                        <td>
+                          <Link
+                            to="/magicCardDetails"
+                            onClick={() => fetchCardDetails(card.id)}
+                          >
+                            {card.name}
+                          </Link>
+                        </td>
                         <td>{card.layout}</td>
                         <td>{card.rarity}</td>
-                        <td>
-                          <button className="btn btn-outline-primary">
-                            Details
-                          </button>
-                        </td>
                       </tr>
                     );
                   })}

@@ -12,3 +12,15 @@ export async function fetchCardsAsync(): Promise<MagicCardItem[]> {
     })
     .catch((error) => console.error(error));
 }
+
+export async function getCardDetailsAsync(id: string): Promise<MagicCardItem> {
+  const url = `https://api.magicthegathering.io/v1/cards/${id}`;
+  return await axios(url)
+    .then((json) => {
+      if (json) {
+        return json.data.card;
+      }
+      return [];
+    })
+    .catch((error) => console.error(error));
+}
