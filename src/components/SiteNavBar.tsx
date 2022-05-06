@@ -1,8 +1,8 @@
 import React from "react";
 import { useContext } from "react";
 import { useAppDispatch } from "../app/hook";
-import LanguageContext from "../Contexts/LanguageContext";
-import { ThemeContext } from "../Contexts/ThemeContext";
+import LanguageContext from "../contexts/LanguageContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 import { getCardsForDashboardAsync } from "../features/magicCards/cardsDashboardSlice";
 import DropDownData from "../utils/DropdownData";
 

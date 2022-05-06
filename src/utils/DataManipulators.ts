@@ -1,5 +1,5 @@
-import { DashboardFilters } from "../DataTypes/DashboardFilters";
-import { MagicCardItem } from "../DataTypes/MagicCardItem";
+import { DashboardFilters } from "../dataTypes/DashboardFilters";
+import { MagicCardItem } from "../dataTypes/MagicCardItem";
 
 export const applyFilterOnMagicCards = (
   cards: MagicCardItem[],

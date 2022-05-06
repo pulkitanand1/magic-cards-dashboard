@@ -1,6 +1,6 @@
 import React from "react";
-import { ThemeItem } from "../DataTypes/ThemeItem";
-import { ThemeType } from "../DataTypes/ThemeType";
+import { ThemeItem } from "../dataTypes/ThemeItem";
+import { ThemeType } from "../dataTypes/ThemeType";
 
 const themeItems: ThemeItem[] = [
   {

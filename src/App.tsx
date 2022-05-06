@@ -1,9 +1,9 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
-import { ThemeContext, themes } from "./Contexts/ThemeContext";
+import { ThemeContext, themes } from "./contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
 import Dashboard from "./components/Dashboard";
-import LanguageContext from "./Contexts/LanguageContext";
+import LanguageContext from "./contexts/LanguageContext";
 
 function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);

@@ -1,8 +1,8 @@
 import "./Dashboard.scss";
 import { useContext, useEffect, useState } from "react";
 import { useAppSelector } from "../app/hook";
-import LanguageContext from "../Contexts/LanguageContext";
-import { DashboardFilters } from "../DataTypes/DashboardFilters";
+import LanguageContext from "../contexts/LanguageContext";
+import { DashboardFilters } from "../dataTypes/DashboardFilters";
 import { selectCards } from "../features/magicCards/cardsDashboardSlice";
 import PaginationFooter from "./PaginationFooter";
 import SidePanel from "./SidePanel";

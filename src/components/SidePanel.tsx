@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DashboardFilters } from "../DataTypes/DashboardFilters";
+import { DashboardFilters } from "../dataTypes/DashboardFilters";
 import DropDownData from "../utils/DropdownData";
 
 import {

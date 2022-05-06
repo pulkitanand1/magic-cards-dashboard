@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MagicCardItem } from "../../DataTypes/MagicCardItem";
+import { MagicCardItem } from "../../dataTypes/MagicCardItem";
 
 export async function fetchCardsAsync(): Promise<MagicCardItem[]> {
   const url = `https://api.magicthegathering.io/v1/cards`;

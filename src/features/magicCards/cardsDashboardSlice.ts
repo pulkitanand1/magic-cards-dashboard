@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { MagicCardItem } from "../../DataTypes/MagicCardItem";
+import { MagicCardItem } from "../../dataTypes/MagicCardItem";
 import { fetchCardsAsync } from "./magicCardsAPI";
 
 export interface CardsDashboardState {
