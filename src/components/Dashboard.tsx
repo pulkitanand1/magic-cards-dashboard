@@ -1,8 +1,7 @@
 import "./Dashboard.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useAppSelector } from "../app/hook";
 import LanguageContext from "../contexts/LanguageContext";
-import { DashboardFilters } from "../dataTypes/DashboardFilters";
 import { selectCards } from "../features/magicCards/cardsDashboardSlice";
 import PaginationFooter from "./PaginationFooter";
 import SidePanel from "./SidePanel";
@@ -10,19 +9,19 @@ import {
   applyFilterOnMagicCards,
   getPaginatedResult,
 } from "../utils/DataManipulators";
+import { DashboardFilters } from "../dataTypes/DashboardFilters";
 
-export default function Dashboard() {
+interface DashboardProps {
+  filters: DashboardFilters;
+  setFilters: (modifiedFilterData: DashboardFilters) => void;
+  currentPage: number;
+  setCurrentPage: (pageNo: number) => void;
+}
+
+export default function Dashboard(props: DashboardProps) {
   const { selectedLanguage } = useContext(LanguageContext);
-
-  const intialFilterState: DashboardFilters = {
-    language: "English",
-    pageSize: 50,
-    colors: [],
-    rarity: "All",
-    superType: "All",
-  };
-  const [filters, setFilters] = useState(intialFilterState);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { filters, setFilters, currentPage, setCurrentPage } =
+    props;
 
   const magicCards = applyFilterOnMagicCards(
     useAppSelector(selectCards),
@@ -62,7 +61,7 @@ export default function Dashboard() {
         <div className="col-xl-10 col-md-9">
           <h3 className="text-dark p-2">
             {paginatedResult.length === 0
-              ? "No Records found"
+              ? "No Records found. Try searching or modify filters."
               : `Total: ${magicCards.length} records`}
           </h3>
           {paginatedResult.length > 0 && (

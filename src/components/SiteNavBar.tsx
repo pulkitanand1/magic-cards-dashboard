@@ -6,7 +6,13 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { getCardsForDashboardAsync } from "../features/magicCards/cardsDashboardSlice";
 import DropDownData from "../utils/DropdownData";
 
-export default function SiteNavBar() {
+interface SiteNavBarProps {
+  enableSearchForm: boolean;
+  handleSearchButtonClick: (searchText: string) => void;
+}
+
+export default function SiteNavBar(props: SiteNavBarProps) {
+  const { enableSearchForm, handleSearchButtonClick } = props;
   const dispatch = useAppDispatch();
   const themeContext = useContext(ThemeContext);
   const { selectedLanguage, changeSelectedLanguage } =
@@ -28,8 +34,11 @@ export default function SiteNavBar() {
   }
 
   function handleSearchOperation() {
+    handleSearchButtonClick(inputRef.current?.value as string);
     dispatch(getCardsForDashboardAsync());
   }
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <nav className={`navbar navbar-expand-lg navbar-${theme} bg-${theme}`}>
@@ -86,6 +95,7 @@ export default function SiteNavBar() {
 
         <form
           className="d-flex"
+          hidden={!enableSearchForm}
           onSubmit={(e) => {
             e.preventDefault();
             handleSearchOperation();
@@ -96,6 +106,7 @@ export default function SiteNavBar() {
             type="search"
             placeholder="Search"
             aria-label="Search"
+            ref={inputRef}
           />
           <button className={`btn btn-${toggleButtonTheme}`} type="submit">
             Search

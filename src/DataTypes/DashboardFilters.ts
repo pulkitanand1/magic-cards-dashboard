@@ -4,4 +4,5 @@ export interface DashboardFilters {
   superType: string;
   rarity: string;
   pageSize: number;
+  searchText: string;
 }

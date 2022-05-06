@@ -34,6 +34,7 @@ const validateWithFilters = (
   let isValid = true;
   isValid =
     card.foreignNames !== undefined &&
+    (filters.searchText === "" || filters.searchText === undefined || card.name.toLowerCase().indexOf(filters.searchText.toLowerCase(), 0) >= 0) &&
     (filters.rarity === "All" || card.rarity === filters.rarity) &&
     (filters.superType === "All" ||
       card.supertypes?.some((superType) => filters.superType === superType)) &&
