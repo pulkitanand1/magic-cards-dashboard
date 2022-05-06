@@ -1,5 +1,5 @@
 import "./Dashboard.scss";
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { useAppSelector } from "../app/hook";
 import LanguageContext from "../contexts/LanguageContext";
 import { selectCards } from "../features/magicCards/cardsDashboardSlice";
@@ -17,30 +17,23 @@ interface DashboardProps {
   setFilters: (modifiedFilterData: DashboardFilters) => void;
   currentPage: number;
   setCurrentPage: (pageNo: number) => void;
-  fetchCardDetails: (id: string) => void;
+  handleMagicCardClick: (id: string) => void;
 }
 
-export default function Dashboard(props: DashboardProps) {
+export default function Dashboard({
+  filters,
+  setFilters,
+  currentPage,
+  setCurrentPage,
+  handleMagicCardClick,
+}: DashboardProps) {
   const { selectedLanguage } = useContext(LanguageContext);
 
-  const { filters, setFilters, currentPage, setCurrentPage, fetchCardDetails } =
-    props;
-
   const magicCards = applyFilterOnMagicCards(
-    useAppSelector(selectCards),
+    useAppSelector(selectCards), // Magic Cards from state
     selectedLanguage,
     filters
-  ); // InitialState
-
-  /**
-   * When language is changed in the context.
-   */
-  useEffect(() => {
-    if (filters.language !== selectedLanguage) {
-      filters.language = selectedLanguage;
-      setFilters(filters);
-    }
-  }, [selectedLanguage]);
+  );
 
   const sidePanelPassThruProps = {
     setCurrentPage,
@@ -57,8 +50,6 @@ export default function Dashboard(props: DashboardProps) {
 
   const paginatedResult = getPaginatedResult(magicCards, filters, currentPage);
 
-  const gridRef = useRef<HTMLDivElement>(null);
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -73,10 +64,7 @@ export default function Dashboard(props: DashboardProps) {
           </div>
 
           {paginatedResult.length > 0 && (
-            <div
-              ref={gridRef}
-              className="magicCardsGrid table-responsive border border-primary p-1 m-2"
-            >
+            <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
               <table className="table">
                 <thead>
                   <tr>
@@ -101,8 +89,10 @@ export default function Dashboard(props: DashboardProps) {
                         <td>{card.seqNo}</td>
                         <td>
                           <Link
+                            onClick={() => {
+                              handleMagicCardClick(card.id);
+                            }}
                             to="/magicCardDetails"
-                            onClick={() => fetchCardDetails(card.id)}
                           >
                             {card.name}
                           </Link>

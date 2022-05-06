@@ -10,12 +10,21 @@ import { store } from "./app/store";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+// Disabling it by default as it calls useEffect() twice
+// which isn't ideal for calling APIs on render.
+const enableStrictMode = false;
 root.render(
-  <React.StrictMode>
+  enableStrictMode ? (
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+  ) : (
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  )
 );
 
 // If you want to start measuring performance in your app, pass a function

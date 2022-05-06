@@ -16,6 +16,7 @@ const initialState = {
 export const getCardsForDashboardAsync = createAsyncThunk(
   "cards/getDashboardData",
   async () => {
+    console.log("search");
     const magicCards = await fetchCardsAsync().then((data) =>
       data.map((d) => d as MagicCardItem)
     );

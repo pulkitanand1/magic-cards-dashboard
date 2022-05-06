@@ -42,5 +42,4 @@ const cardDetailsSlice = createSlice({
 });
 
 export const selectCardDetails = (state: RootState) => state.cardDetails.value;
-
 export default cardDetailsSlice.reducer;

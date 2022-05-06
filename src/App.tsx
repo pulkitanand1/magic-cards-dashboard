@@ -5,10 +5,10 @@ import SiteNavBar from "./components/SiteNavBar";
 import Dashboard from "./components/Dashboard";
 import LanguageContext from "./contexts/LanguageContext";
 import { DashboardFilters } from "./dataTypes/DashboardFilters";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import MagicCardDetailsPage from "./components/MagicCardDetailsPage";
 import { useAppDispatch } from "./app/hook";
-import { getDetailsForCardAsync } from "./features/magicCards/cardDetailsSlice";
+import { getCardsForDashboardAsync } from "./features/magicCards/cardsDashboardSlice";
 
 function App() {
   const intialFilterState: DashboardFilters = {
@@ -19,12 +19,12 @@ function App() {
     superType: "All",
     searchText: "",
   };
+  const dispatch = useAppDispatch();
   const [filters, setFilters] = useState(intialFilterState);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
-  const [enableSearchForm, setEnableSearchForm] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDetailLoaded, setIsDetailLoaded] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState("");
 
   const currentTheme = isDarkTheme ? themes.dark : themes.light;
 
@@ -55,13 +55,13 @@ function App() {
     const newFilters = { ...filters };
     newFilters.searchText = searchText;
     setFilters(newFilters);
+    dispatch(getCardsForDashboardAsync());
   };
 
-  const siteNavBarPassThruProps = { enableSearchForm, handleSearchButtonClick };
+  const siteNavBarPassThruProps = { handleSearchButtonClick };
 
-  const fetchCardDetails = (id: string) => {
-    setIsDetailLoaded(false);
-    dispatch(getDetailsForCardAsync(id)).then(() => setIsDetailLoaded(true));
+  const handleMagicCardClick = (id: string) => {
+    setSelectedCardId(id);
   };
 
   const dashboardPassThruProps = {
@@ -69,34 +69,36 @@ function App() {
     setFilters,
     currentPage,
     setCurrentPage,
-    fetchCardDetails,
+    handleMagicCardClick,
   };
 
-  const cardDetailPassThruProps = {
-    isDetailLoaded,
-  };
-
-  const dispatch = useAppDispatch();
+  const magicCardDetailsProps = { selectedCardId: selectedCardId };
 
   return (
-    <BrowserRouter>
-      <LanguageContext.Provider value={languageContextValue}>
-        <ThemeContext.Provider value={themeContextValue}>
+    <LanguageContext.Provider value={languageContextValue}>
+      <ThemeContext.Provider value={themeContextValue}>
+        <BrowserRouter>
           <SiteNavBar {...siteNavBarPassThruProps} />
+
           <Routes>
             <Route
               path="/"
               element={<Dashboard {...dashboardPassThruProps} />}
             />
-
             <Route
               path="/magicCardDetails"
-              element={<MagicCardDetailsPage {...cardDetailPassThruProps} />}
+              element={
+                selectedCardId !== "" ? (
+                  <MagicCardDetailsPage {...magicCardDetailsProps} />
+                ) : (
+                  <Navigate replace to="/" />
+                )
+              }
             />
           </Routes>
-        </ThemeContext.Provider>
-      </LanguageContext.Provider>
-    </BrowserRouter>
+        </BrowserRouter>
+      </ThemeContext.Provider>
+    </LanguageContext.Provider>
   );
 }
 

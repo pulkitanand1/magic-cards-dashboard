@@ -1,19 +1,17 @@
 import React from "react";
 import { useContext } from "react";
-import { useAppDispatch } from "../app/hook";
+import { Link, useLocation } from "react-router-dom";
 import LanguageContext from "../contexts/LanguageContext";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { getCardsForDashboardAsync } from "../features/magicCards/cardsDashboardSlice";
 import DropDownData from "../utils/DropdownData";
 
 interface SiteNavBarProps {
-  enableSearchForm: boolean;
   handleSearchButtonClick: (searchText: string) => void;
 }
 
 export default function SiteNavBar(props: SiteNavBarProps) {
-  const { enableSearchForm, handleSearchButtonClick } = props;
-  const dispatch = useAppDispatch();
+  const { handleSearchButtonClick } = props;
+  const location = useLocation();
   const themeContext = useContext(ThemeContext);
   const { selectedLanguage, changeSelectedLanguage } =
     useContext(LanguageContext);
@@ -35,15 +33,44 @@ export default function SiteNavBar(props: SiteNavBarProps) {
 
   function handleSearchOperation() {
     handleSearchButtonClick(inputRef.current?.value as string);
-    dispatch(getCardsForDashboardAsync());
   }
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const SearchForm = () => {
+    const enableSearchForm = location.pathname.indexOf("magicCardDetails") < 0;
+    if (enableSearchForm) {
+      return (
+        <form
+          className="d-flex"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearchOperation();
+          }}
+        >
+          <input
+            className="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            ref={inputRef}
+          />
+          <button className={`btn btn-${toggleButtonTheme}`} type="submit">
+            Search
+          </button>
+        </form>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   return (
     <nav className={`navbar navbar-expand-lg navbar-${theme} bg-${theme}`}>
       <div className="container-fluid">
-        <a className="navbar-brand">Magic Cards Dashboard</a>
+        <Link to="/" className="navbar-brand">
+          Magic Cards Dashboard
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -92,26 +119,7 @@ export default function SiteNavBar(props: SiteNavBarProps) {
             </li>
           </ul>
         </div>
-
-        <form
-          className="d-flex"
-          hidden={!enableSearchForm}
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSearchOperation();
-          }}
-        >
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            ref={inputRef}
-          />
-          <button className={`btn btn-${toggleButtonTheme}`} type="submit">
-            Search
-          </button>
-        </form>
+        <SearchForm />
       </div>
     </nav>
   );
