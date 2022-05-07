@@ -41,7 +41,7 @@ export default function SiteNavBar(props: SiteNavBarProps) {
     >
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          Magic Cards Dashboard
+          <u>Magic Cards Dashboard</u> 
         </Link>
         <button
           className="navbar-toggler"
