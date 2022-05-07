@@ -1,9 +1,9 @@
-import React from "react";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import LanguageContext from "../contexts/LanguageContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import DropDownData from "../utils/DropdownData";
+import SearchForm from "./SearchForm";
 
 interface SiteNavBarProps {
   handleSearchButtonClick: (searchText: string) => void;
@@ -16,7 +16,7 @@ export default function SiteNavBar(props: SiteNavBarProps) {
   const { selectedLanguage, changeSelectedLanguage } =
     useContext(LanguageContext);
 
-  const theme = themeContext.isDark ? "dark" : "light";
+  const alterThemeTag = themeContext.isDark ? "dark" : "light";
 
   // It should provide the ability to toggle.
   const toggleButtonTheme = themeContext.isDark ? "light" : "dark";
@@ -31,42 +31,14 @@ export default function SiteNavBar(props: SiteNavBarProps) {
     changeSelectedLanguage(value);
   }
 
-  function handleSearchOperation() {
-    handleSearchButtonClick(inputRef.current?.value as string);
-  }
-
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const SearchForm = () => {
-    const enableSearchForm = location.pathname.indexOf("magicCardDetails") < 0;
-    if (enableSearchForm) {
-      return (
-        <form
-          className="d-flex"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSearchOperation();
-          }}
-        >
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            ref={inputRef}
-          />
-          <button className={`btn btn-${toggleButtonTheme}`} type="submit">
-            Search
-          </button>
-        </form>
-      );
-    } else {
-      return <></>;
-    }
+  const searchFormProps = {
+    handleSearchButtonClick: handleSearchButtonClick,
+    isVisible: location.pathname.indexOf("magicCardDetails") < 0,
   };
-
   return (
-    <nav className={`navbar navbar-expand-lg navbar-${theme} bg-${theme}`}>
+    <nav
+      className={`navbar navbar-expand-lg navbar-${alterThemeTag} bg-${alterThemeTag}`}
+    >
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
           Magic Cards Dashboard
@@ -119,7 +91,7 @@ export default function SiteNavBar(props: SiteNavBarProps) {
             </li>
           </ul>
         </div>
-        <SearchForm />
+        <SearchForm {...searchFormProps} />
       </div>
     </nav>
   );

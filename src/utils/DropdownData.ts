@@ -8,7 +8,7 @@ const DropDownData = {
   ],
   superTypes: ["All", "Basic", "Host", "Legendary", "Ongoing", "Snow", "World"],
 
-  colors: ["Black", "White"],
+  colors: ["Black", "Blue"],
 
   rarityOptions: [
     "All",

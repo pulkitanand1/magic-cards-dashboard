@@ -11,6 +11,7 @@ import {
 } from "../utils/DataManipulators";
 import { DashboardFilters } from "../dataTypes/DashboardFilters";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 interface DashboardProps {
   filters: DashboardFilters;
@@ -28,6 +29,7 @@ export default function Dashboard({
   handleMagicCardClick,
 }: DashboardProps) {
   const { selectedLanguage } = useContext(LanguageContext);
+  const { isDark } = useContext(ThemeContext);
 
   const magicCards = applyFilterOnMagicCards(
     useAppSelector(selectCards), // Magic Cards from state
@@ -56,7 +58,7 @@ export default function Dashboard({
         <SidePanel {...sidePanelPassThruProps} />
         <div className="col-xl-10 col-md-9">
           <div>
-            <h3 className="text-dark p-1">
+            <h3 className={isDark ? `text-light p-1` : `p-1`}>
               {paginatedResult.length === 0
                 ? "No Records found. Try searching or modify filters."
                 : `Total: ${magicCards.length} records`}
@@ -64,8 +66,12 @@ export default function Dashboard({
           </div>
 
           {paginatedResult.length > 0 && (
-            <div className="magicCardsGrid table-responsive border border-primary p-1 m-2">
-              <table className="table">
+            <div
+              className={`magicCardsGrid table-responsive border rounded-3 p-1 m-2 ${
+                isDark ? " border-light" : "border-dark"
+              }`}
+            >
+              <table className={`table text-${isDark ? "light" : "dark"}`}>
                 <thead>
                   <tr>
                     <th scope="col" className="col-md-1">

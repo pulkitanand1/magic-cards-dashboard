@@ -9,7 +9,7 @@ const themeItems: ThemeItem[] = [
   },
   {
     foreground: "#ffffff",
-    background: "#222222",
+    background: "#383838",
   },
 ];
 

@@ -6,7 +6,6 @@ interface PaginatorFooterProps {
 
 const PaginationFooter = (props: PaginatorFooterProps) => {
   const { currentPage, noOfPages, setCurrentPage } = { ...props };
-
   /**
    * Sets the currentPageNumber which changes the records shown in grid.
    * @param pageValue value passed by the pagination button.

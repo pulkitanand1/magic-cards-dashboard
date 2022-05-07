@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { DashboardFilters } from "../dataTypes/DashboardFilters";
 import DropDownData from "../utils/DropdownData";
-
 import {
   CheckboxCardSidePanel,
   CheckboxCardSidePanelProps,
+} from "./CheckboxCardSidePanel";
+import {
   SelectionCardSidePanel,
   SelectionCardSidePanelProps,
-} from "./SidePanelFilterItem";
+} from "./SelectionCardSidePanel";
 
 interface SidePanelProps {
   setCurrentPage: (currentPage: number) => void;
@@ -18,7 +19,7 @@ interface SidePanelProps {
 export default function SidePanel(props: SidePanelProps) {
   const { setCurrentPage, filters, setFilters } = { ...props };
   const [isFilterModified, setisFilterModified] = useState(false);
-  const currentFilters = { ...filters }; // New object
+  const [localFilters, setLocalFilters] = useState(filters); // Local state to be maintained to keep changes till apply button is clicked.
   const { superTypes, colors, rarityOptions, pageSizes } = DropDownData;
 
   /**
@@ -26,7 +27,7 @@ export default function SidePanel(props: SidePanelProps) {
    */
   const handleApplyClick = () => {
     setisFilterModified(false);
-    setFilters(currentFilters);
+    setFilters(localFilters);
     setCurrentPage(1);
   };
 
@@ -35,24 +36,25 @@ export default function SidePanel(props: SidePanelProps) {
     selectedItem: string,
     filterOption: string
   ) => {
+    const newFilters = { ...localFilters }; // In order to issue change detection
     switch (filterOption) {
       case "colors":
-        currentFilters.colors = checkedItems;
+        newFilters.colors = checkedItems;
         break;
       case "superType":
-        currentFilters.superType = selectedItem;
+        newFilters.superType = selectedItem;
         break;
       case "rarity":
-        currentFilters.rarity = selectedItem;
+        newFilters.rarity = selectedItem;
         break;
       case "pageSize":
-        currentFilters.pageSize = parseInt(selectedItem);
+        newFilters.pageSize = parseInt(selectedItem);
         break;
     }
     if (!isFilterModified) {
       setisFilterModified(true);
     }
-    setFilters(currentFilters);
+    setLocalFilters(newFilters);
   };
 
   const colorFilterProps: CheckboxCardSidePanelProps = {
@@ -61,7 +63,7 @@ export default function SidePanel(props: SidePanelProps) {
     },
     filterLabel: "Colors",
     optionValues: colors,
-    checkedItems: currentFilters.colors,
+    checkedItems: localFilters.colors,
   };
 
   const superTypeFilterProps: SelectionCardSidePanelProps = {
@@ -70,7 +72,7 @@ export default function SidePanel(props: SidePanelProps) {
     },
     filterLabel: "SuperType",
     optionValues: superTypes,
-    selectedItem: currentFilters.superType,
+    selectedItem: localFilters.superType,
   };
 
   const rarityFilterProps: SelectionCardSidePanelProps = {
@@ -79,7 +81,7 @@ export default function SidePanel(props: SidePanelProps) {
     },
     filterLabel: "Rarity",
     optionValues: rarityOptions,
-    selectedItem: currentFilters.rarity,
+    selectedItem: localFilters.rarity,
   };
 
   const pageSizeFilterProps: SelectionCardSidePanelProps = {
@@ -88,7 +90,7 @@ export default function SidePanel(props: SidePanelProps) {
     },
     filterLabel: "Page Size",
     optionValues: pageSizes,
-    selectedItem: currentFilters.pageSize.toString(),
+    selectedItem: localFilters.pageSize.toString(),
   };
 
   return (
