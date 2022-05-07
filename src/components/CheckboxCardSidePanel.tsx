@@ -8,10 +8,20 @@ export interface CheckboxCardSidePanelProps {
   checkedItems: string[];
 }
 
+/**
+ * This components renders a check box card on the basis of data provided
+ * and updates the filters.
+ * @param props required for rendering.
+ * @returns
+ */
 export const CheckboxCardSidePanel = (props: CheckboxCardSidePanelProps) => {
   const themeContext = useContext(ThemeContext);
   const _checkedItems = [...props.checkedItems]; // To avoid modifying the state
   const { filterLabel, optionValues, handleCheckedValues } = props;
+
+  /**
+   * Handles the checkbox 'checked' event and modfies the selected value collection.
+   */
   const handleCheckboxEvent = (isChecked: boolean, checkedValue: string) => {
     const idx = _checkedItems.indexOf(checkedValue);
     if (isChecked && idx === -1) {

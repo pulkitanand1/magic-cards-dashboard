@@ -12,6 +12,14 @@ interface MagiCardDetailsPageProps {
   selectedCardId: string;
 }
 
+/**
+ * This component is rendered at location "magicCardDetails" and
+ * shows the details of the card as per the language.
+ * It shows the image of the card and a distinctive box shadow around it based
+ * on the value of its "rarity" field. Each rarity value will render a different shadow.
+ * @param props selectedCardId which is the card clicked on Dashboard.
+ * @returns
+ */
 const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
   const [isFetchingComplete, setIsFetchingCompleted] = useState(false);
   const dispatch = useAppDispatch();
@@ -20,6 +28,10 @@ const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
   const { isDark } = useContext(ThemeContext);
   const cardDetails = useAppSelector(selectCardDetails);
 
+  /**
+   * Runs a dispatch after it receives a magic card Id through props.
+   * Depends on selectedCardId as it's the only way it fetches data.
+   */
   useEffect(() => {
     if (cardDetails && cardDetails.id !== "" && !isFetchingComplete) {
       dispatch(getDetailsForCardAsync(selectedCardId)).then(() => {
@@ -28,6 +40,10 @@ const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
     }
   }, [selectedCardId]);
 
+  /**
+   * Actual component to be rendered when details are received.
+   * Until then, a loading icon is shown.
+   */
   if (cardDetails && cardDetails.id && isFetchingComplete) {
     const _cardDetails = { ...cardDetails };
     const foreignName = _cardDetails?.foreignNames.find(
@@ -64,6 +80,9 @@ const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
     );
   }
 
+  /**
+   * Loading icon is shown by default.
+   */
   return (
     <div>
       <div className="spinner-grow text-primary" role="status">

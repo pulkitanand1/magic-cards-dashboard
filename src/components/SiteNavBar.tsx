@@ -9,6 +9,15 @@ interface SiteNavBarProps {
   handleSearchButtonClick: (searchText: string) => void;
 }
 
+/**
+ * This component renders the top navigation bar which comprises of
+ * clickable Nav bar title (navigates to dashboard page),
+ * "Turn light" - theme swich button,
+ * Language switch drop down (default: English),
+ * and a search form.
+ * @param props : handleSearchButtonClick event is bubbled when search button is clicked;
+ * @returns
+ */
 export default function SiteNavBar(props: SiteNavBarProps) {
   const { handleSearchButtonClick } = props;
   const location = useLocation();
@@ -21,12 +30,20 @@ export default function SiteNavBar(props: SiteNavBarProps) {
   // It should provide the ability to toggle.
   const toggleButtonTheme = themeContext.isDark ? "light" : "dark";
 
+  /**
+   * Handles the theme button click.
+   * It can either be "dark" or "light", thus toggle operation is performed.
+   */
   function handleToggleThemeButtonClick() {
     themeContext.toggleTheme();
   }
 
   const languagesList = DropDownData.languagesList;
 
+  /**
+   * Handles the language selection
+   * @param value : selected language
+   */
   function handleLanguageSelection(value: string) {
     changeSelectedLanguage(value);
   }
@@ -41,7 +58,7 @@ export default function SiteNavBar(props: SiteNavBarProps) {
     >
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          <u>Magic Cards Dashboard</u> 
+          <u>Magic Cards Dashboard</u>
         </Link>
         <button
           className="navbar-toggler"

@@ -4,8 +4,15 @@ interface PaginatorFooterProps {
   setCurrentPage: (pageNo: number) => void;
 }
 
+/**
+ * This component renders a pagination button array below the grid.
+ * It only renders if the page size is greater than 1.
+ * @param props Props required for operation
+ * @returns
+ */
 const PaginationFooter = (props: PaginatorFooterProps) => {
   const { currentPage, noOfPages, setCurrentPage } = { ...props };
+
   /**
    * Sets the currentPageNumber which changes the records shown in grid.
    * @param pageValue value passed by the pagination button.

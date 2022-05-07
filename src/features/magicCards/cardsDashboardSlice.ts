@@ -13,6 +13,9 @@ const initialState = {
   status: "idle",
 } as CardsDashboardState;
 
+/**
+ * Asynchrnously fetches a list of 100 cards from the API.
+ */
 export const getCardsForDashboardAsync = createAsyncThunk(
   "cards/getDashboardData",
   async () => {

@@ -13,6 +13,10 @@ const initialState = {
   status: "idle",
 };
 
+/**
+ * Asynchronously fetches the magic card details on the basis
+ * of magic card id.
+ */
 export const getDetailsForCardAsync = createAsyncThunk(
   "cards/getCardDetails",
   async (id: string) => {

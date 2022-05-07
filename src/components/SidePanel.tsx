@@ -16,6 +16,14 @@ interface SidePanelProps {
   setFilters: (filters: DashboardFilters) => void;
 }
 
+/**
+ * This components renders various cards which are used for filteration and "Apply"
+ * and "Reset" button to toggle and apply filteration on "Searched" data.
+ * The filters can only be applied on existing data as the API doesn't allow
+ * filters to be sent within the URL.
+ * @param props : setCurrentPage function, filters and a function that sets the filters.
+ * @returns
+ */
 export default function SidePanel(props: SidePanelProps) {
   const { setCurrentPage, filters, setFilters } = { ...props };
   const [isFilterModified, setisFilterModified] = useState(false);
@@ -31,6 +39,9 @@ export default function SidePanel(props: SidePanelProps) {
     setCurrentPage(1);
   };
 
+  /**
+   * Resets the filters to their initial values.
+   */
   const handleResetFilters = () => {
     const newFilterState = { ...intialFilterState };
     newFilterState.searchText = filters.searchText;
@@ -39,6 +50,12 @@ export default function SidePanel(props: SidePanelProps) {
     setisFilterModified(false);
   };
 
+  /**
+   *
+   * @param checkedItems : The values checked on checkbox type control.
+   * @param selectedItem : The value selected on dropdown.
+   * @param filterOption : The data "field" for which the value was selected.
+   */
   const handleFilterSelection = (
     checkedItems: string[],
     selectedItem: string,

@@ -8,6 +8,12 @@ export interface SelectionCardSidePanelProps {
   selectedItem: string;
 }
 
+/**
+ * This components renders a dropdown (selection) card on the basis of data provided
+ * and updates the filters.
+ * @param props required for rendering.
+ * @returns
+ */
 export const SelectionCardSidePanel = (props: SelectionCardSidePanelProps) => {
   const { filterLabel, optionValues, selectedItem, handleSelection } = props;
 

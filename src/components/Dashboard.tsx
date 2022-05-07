@@ -21,6 +21,12 @@ interface DashboardProps {
   handleMagicCardClick: (id: string) => void;
 }
 
+/**
+ * This component renders the data grid, pagination footer and side panel
+ * and performs the filteration on data fetched after search.
+ * @param param filters and current page from Parent component.
+ * @returns
+ */
 export default function Dashboard({
   filters,
   setFilters,
@@ -31,6 +37,7 @@ export default function Dashboard({
   const { selectedLanguage } = useContext(LanguageContext);
   const { isDark } = useContext(ThemeContext);
 
+  // Getting data post filteration.
   const magicCards = applyFilterOnMagicCards(
     useAppSelector(selectCards), // Magic Cards from state
     selectedLanguage,
@@ -60,7 +67,7 @@ export default function Dashboard({
           <div>
             <h3 className={isDark ? `text-light p-1` : `p-1`}>
               {paginatedResult.length === 0
-                ? "No Records found. Try searching or modify filters."
+                ? "No Records found. Please check Search box and Filter values."
                 : `Total: ${magicCards.length} records`}
             </h3>
           </div>
