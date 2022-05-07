@@ -116,7 +116,6 @@ export default function SidePanel(props: SidePanelProps) {
       </button>
       <button
         className="btn btn-success m-3 justify-content-center"
-        disabled={!isFilterModified}
         onClick={handleResetFilters}
       >
         Reset
