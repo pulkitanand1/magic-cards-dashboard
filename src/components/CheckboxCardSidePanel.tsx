@@ -40,7 +40,7 @@ export const CheckboxCardSidePanel = (props: CheckboxCardSidePanelProps) => {
                   className="form-check-input"
                   type="checkbox"
                   value={ov}
-                  defaultChecked={_checkedItems.indexOf(ov) >= 0}
+                  checked={_checkedItems.indexOf(ov) >= 0}
                   onChange={(e) => handleCheckboxEvent(e.target.checked, ov)}
                 />
                 {ov}

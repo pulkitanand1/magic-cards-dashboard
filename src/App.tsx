@@ -4,21 +4,13 @@ import { ThemeContext, themes } from "./contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
 import Dashboard from "./components/Dashboard";
 import LanguageContext from "./contexts/LanguageContext";
-import { DashboardFilters } from "./dataTypes/DashboardFilters";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import MagicCardDetailsPage from "./components/MagicCardDetailsPage";
 import { useAppDispatch } from "./app/hook";
 import { getCardsForDashboardAsync } from "./features/magicCards/cardsDashboardSlice";
+import { intialFilterState } from "./utils/DropdownData";
 
 function App() {
-  const intialFilterState: DashboardFilters = {
-    language: "English",
-    pageSize: 50,
-    colors: [],
-    rarity: "All",
-    superType: "All",
-    searchText: "",
-  };
   const dispatch = useAppDispatch();
   const [filters, setFilters] = useState(intialFilterState);
   const [isDarkTheme, setIsDarkTheme] = useState(false);

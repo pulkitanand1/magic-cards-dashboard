@@ -1,3 +1,5 @@
+import { DashboardFilters } from "../dataTypes/DashboardFilters";
+
 const DropDownData = {
   languagesList: [
     "English",
@@ -20,6 +22,15 @@ const DropDownData = {
     "Basic Land",
   ],
   pageSizes: ["10", "25", "50"],
+};
+
+export const intialFilterState: DashboardFilters = {
+  language: "English",
+  pageSize: 50,
+  colors: [],
+  rarity: "All",
+  superType: "All",
+  searchText: "",
 };
 
 export default DropDownData;

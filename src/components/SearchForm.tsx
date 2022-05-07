@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 interface SearchFormProps {
   handleSearchButtonClick: (searchTextValue: string) => void;
@@ -10,6 +11,7 @@ const SearchForm = ({
   isVisible,
 }: SearchFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { isDark } = useContext(ThemeContext);
   if (isVisible) {
     return (
       <form
@@ -26,7 +28,10 @@ const SearchForm = ({
           placeholder="Search"
           aria-label="Search"
         />
-        <button className={`btn btn-dark`} type="submit">
+        <button
+          className={isDark ? `btn btn-light` : `btn btn-dark`}
+          type="submit"
+        >
           Search
         </button>
       </form>

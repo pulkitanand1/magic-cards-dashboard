@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DashboardFilters } from "../dataTypes/DashboardFilters";
-import DropDownData from "../utils/DropdownData";
+import DropDownData, { intialFilterState } from "../utils/DropdownData";
 import {
   CheckboxCardSidePanel,
   CheckboxCardSidePanelProps,
@@ -29,6 +29,14 @@ export default function SidePanel(props: SidePanelProps) {
     setisFilterModified(false);
     setFilters(localFilters);
     setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    const newFilterState = { ...intialFilterState };
+    newFilterState.searchText = filters.searchText;
+    setLocalFilters(newFilterState);
+    setFilters(newFilterState);
+    setisFilterModified(false);
   };
 
   const handleFilterSelection = (
@@ -100,11 +108,18 @@ export default function SidePanel(props: SidePanelProps) {
       <SelectionCardSidePanel {...rarityFilterProps} />
       <SelectionCardSidePanel {...pageSizeFilterProps} />
       <button
-        className="btn btn-primary mt-3 justify-content-center"
+        className="btn btn-primary m-3 justify-content-center"
         disabled={!isFilterModified}
         onClick={handleApplyClick}
       >
         Apply
+      </button>
+      <button
+        className="btn btn-success m-3 justify-content-center"
+        disabled={!isFilterModified}
+        onClick={handleResetFilters}
+      >
+        Reset
       </button>
     </div>
   );
