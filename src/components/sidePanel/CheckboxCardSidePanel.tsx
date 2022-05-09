@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ThemeContext } from "../contexts/ThemeContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 export interface CheckboxCardSidePanelProps {
   filterLabel: string;
@@ -39,7 +39,11 @@ export const CheckboxCardSidePanel = (props: CheckboxCardSidePanelProps) => {
   };
 
   return (
-    <div className="card mb-2 rounded-3" style={cardTheme}>
+    <div
+      className="card mb-2 rounded-3"
+      style={cardTheme}
+      data-testid="checkbox-panel"
+    >
       <div className="card-body">
         <h5 className="class-title">{filterLabel}</h5>
         <div className="row form-check card-text">

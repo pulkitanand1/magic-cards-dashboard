@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ThemeContext } from "../contexts/ThemeContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 export interface SelectionCardSidePanelProps {
   filterLabel: string;
@@ -29,13 +29,18 @@ export const SelectionCardSidePanel = (props: SelectionCardSidePanelProps) => {
     handleSelection(selectedValue);
   };
   return (
-    <div className="card mb-2 rounded-3" style={cardTheme}>
+    <div
+      className="card mb-2 rounded-3"
+      style={cardTheme}
+      data-testid="selection-sidepanel"
+    >
       <div className="card-body">
         <h5 className="class-title">{filterLabel}</h5>
         <div className="row form-check card-text">
           {
             <div className="card-body p-0">
               <button
+                data-testid="dropdown-button"
                 className="btn btn-primary dropdown-toggle"
                 type="button"
                 id="dropdownMenuButton1"

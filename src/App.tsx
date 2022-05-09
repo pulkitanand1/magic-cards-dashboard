@@ -9,6 +9,7 @@ import MagicCardDetailsPage from "./components/MagicCardDetailsPage";
 import { useAppDispatch } from "./app/hook";
 import { getCardsForDashboardAsync } from "./features/magicCards/cardsDashboardSlice";
 import { intialFilterState } from "./utils/DropdownData";
+import { DashboardFilters } from "./dataTypes/DashboardFilters";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -56,9 +57,14 @@ function App() {
     setSelectedCardId(id);
   };
 
+  const handleSetFilters = (filters: DashboardFilters) => {
+    setCurrentPage(1);
+    setFilters(filters);
+  };
+
   const dashboardPassThruProps = {
     filters,
-    setFilters,
+    handleSetFilters,
     currentPage,
     setCurrentPage,
     handleMagicCardClick,

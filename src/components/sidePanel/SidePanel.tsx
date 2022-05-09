@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { DashboardFilters } from "../dataTypes/DashboardFilters";
-import DropDownData, { intialFilterState } from "../utils/DropdownData";
+import { DashboardFilters } from "../../dataTypes/DashboardFilters";
+import DropDownData, { intialFilterState } from "../../utils/DropdownData";
 import {
   CheckboxCardSidePanel,
   CheckboxCardSidePanelProps,
@@ -11,9 +11,8 @@ import {
 } from "./SelectionCardSidePanel";
 
 interface SidePanelProps {
-  setCurrentPage: (currentPage: number) => void;
   filters: DashboardFilters;
-  setFilters: (filters: DashboardFilters) => void;
+  handleSetFilters: (filters: DashboardFilters) => void;
 }
 
 /**
@@ -25,7 +24,7 @@ interface SidePanelProps {
  * @returns
  */
 export default function SidePanel(props: SidePanelProps) {
-  const { setCurrentPage, filters, setFilters } = { ...props };
+  const { filters, handleSetFilters } = { ...props };
   const [isFilterModified, setisFilterModified] = useState(false);
   const [localFilters, setLocalFilters] = useState(filters); // Local state to be maintained to keep changes till apply button is clicked.
   const { superTypes, colors, rarityOptions, pageSizes } = DropDownData;
@@ -35,8 +34,7 @@ export default function SidePanel(props: SidePanelProps) {
    */
   const handleApplyClick = () => {
     setisFilterModified(false);
-    setFilters(localFilters);
-    setCurrentPage(1);
+    handleSetFilters(localFilters);
   };
 
   /**
@@ -46,7 +44,7 @@ export default function SidePanel(props: SidePanelProps) {
     const newFilterState = { ...intialFilterState };
     newFilterState.searchText = filters.searchText;
     setLocalFilters(newFilterState);
-    setFilters(newFilterState);
+    handleSetFilters(newFilterState);
     setisFilterModified(false);
   };
 
@@ -119,12 +117,13 @@ export default function SidePanel(props: SidePanelProps) {
   };
 
   return (
-    <div className="col-xl-2 col-md mt-2">
+    <div className="col-xl-2 col-md mt-2" data-testid="side-panel">
       <CheckboxCardSidePanel {...colorFilterProps} />
       <SelectionCardSidePanel {...superTypeFilterProps} />
       <SelectionCardSidePanel {...rarityFilterProps} />
       <SelectionCardSidePanel {...pageSizeFilterProps} />
       <button
+        data-testid="apply-button"
         className="btn btn-primary m-3 justify-content-center"
         disabled={!isFilterModified}
         onClick={handleApplyClick}
@@ -132,6 +131,7 @@ export default function SidePanel(props: SidePanelProps) {
         Apply
       </button>
       <button
+        data-testid="reset-button"
         className="btn btn-success m-3 justify-content-center"
         onClick={handleResetFilters}
       >

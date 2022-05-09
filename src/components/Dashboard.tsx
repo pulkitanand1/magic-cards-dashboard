@@ -4,7 +4,7 @@ import { useAppSelector } from "../app/hook";
 import LanguageContext from "../contexts/LanguageContext";
 import { selectCards } from "../features/magicCards/cardsDashboardSlice";
 import PaginationFooter from "./PaginationFooter";
-import SidePanel from "./SidePanel";
+import SidePanel from "./sidePanel/SidePanel";
 import {
   applyFilterOnMagicCards,
   getPaginatedResult,
@@ -15,7 +15,7 @@ import { ThemeContext } from "../contexts/ThemeContext";
 
 interface DashboardProps {
   filters: DashboardFilters;
-  setFilters: (modifiedFilterData: DashboardFilters) => void;
+  handleSetFilters: (modifiedFilterData: DashboardFilters) => void;
   currentPage: number;
   setCurrentPage: (pageNo: number) => void;
   handleMagicCardClick: (id: string) => void;
@@ -29,7 +29,7 @@ interface DashboardProps {
  */
 export default function Dashboard({
   filters,
-  setFilters,
+  handleSetFilters,
   currentPage,
   setCurrentPage,
   handleMagicCardClick,
@@ -45,9 +45,8 @@ export default function Dashboard({
   );
 
   const sidePanelPassThruProps = {
-    setCurrentPage,
     filters,
-    setFilters,
+    handleSetFilters,
   };
 
   const noOfPages = Math.ceil(magicCards.length / filters.pageSize);
