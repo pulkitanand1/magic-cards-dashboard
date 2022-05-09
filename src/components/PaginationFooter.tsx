@@ -38,7 +38,7 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
     }
   };
   return (
-    <nav aria-label="...">
+    <nav aria-label="..." data-testid="pagination-footer">
       <ul className="pagination m-2">
         <li
           className={
@@ -48,6 +48,7 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
           }
         >
           <a
+            data-testid="previous-page"
             className="page-link"
             onClick={() => handlePaginationButtonClick(-1)}
           >
@@ -80,6 +81,7 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
           }
         >
           <a
+            data-testid="next-page"
             className="page-link"
             onClick={() => handlePaginationButtonClick(currentPage + 1)}
           >
