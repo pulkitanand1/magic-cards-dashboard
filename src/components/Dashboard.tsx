@@ -59,7 +59,7 @@ export default function Dashboard({
   const paginatedResult = getPaginatedResult(magicCards, filters, currentPage);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" data-testid="dashboard">
       <div className="row">
         <SidePanel {...sidePanelPassThruProps} />
         <div className="col-xl-10 col-md-9">

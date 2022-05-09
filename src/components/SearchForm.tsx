@@ -24,6 +24,7 @@ const SearchForm = ({
   if (isVisible) {
     return (
       <form
+        data-testid="search-form"
         className="d-flex"
         onSubmit={(e) => {
           e.preventDefault();
@@ -38,6 +39,7 @@ const SearchForm = ({
           aria-label="Search"
         />
         <button
+          data-testid="search-button"
           className={isDark ? `btn btn-light` : `btn btn-dark`}
           type="submit"
         >
