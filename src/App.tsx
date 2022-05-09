@@ -1,15 +1,14 @@
-import "./App.scss";
-import React, { useEffect, useState } from "react";
+import "./common.scss";
+import React, { Suspense, useEffect, useState } from "react";
 import { ThemeContext, themes } from "./contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
-import Dashboard from "./components/Dashboard";
 import LanguageContext from "./contexts/LanguageContext";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import MagicCardDetailsPage from "./components/MagicCardDetailsPage";
 import { useAppDispatch } from "./app/hook";
 import { getCardsForDashboardAsync } from "./features/magicCards/cardsDashboardSlice";
 import { intialFilterState } from "./utils/DropdownData";
 import { DashboardFilters } from "./dataTypes/DashboardFilters";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -72,6 +71,9 @@ function App() {
 
   const magicCardDetailsProps = { selectedCardId: selectedCardId };
 
+  const MagicCardDetailsPage = React.lazy(
+    () => import("./components/MagicCardDetailsPage")
+  );
   return (
     <LanguageContext.Provider value={languageContextValue}>
       <ThemeContext.Provider value={themeContextValue}>
@@ -83,11 +85,20 @@ function App() {
               path="/"
               element={<Dashboard {...dashboardPassThruProps} />}
             />
+
             <Route
               path="/magicCardDetails"
               element={
                 selectedCardId !== "" ? (
-                  <MagicCardDetailsPage {...magicCardDetailsProps} />
+                  <Suspense
+                    fallback={
+                      <div className="spinner-grow text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    }
+                  >
+                    <MagicCardDetailsPage {...magicCardDetailsProps} />
+                  </Suspense>
                 ) : (
                   <Navigate replace to="/" />
                 )
