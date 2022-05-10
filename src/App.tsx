@@ -4,15 +4,18 @@ import { ThemeContext, themes } from "./contexts/ThemeContext";
 import SiteNavBar from "./components/SiteNavBar";
 import LanguageContext from "./contexts/LanguageContext";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useAppDispatch } from "./app/hook";
+import { useAppDispatch, useAppSelector } from "./app/hook";
 import { getCardsForDashboardAsync } from "./features/magicCards/cardsDashboardSlice";
-import { intialFilterState } from "./utils/DropdownData";
 import { DashboardFilters } from "./dataTypes/DashboardFilters";
 import Dashboard from "./components/Dashboard";
+import {
+  SelectFilters,
+  updateFilters,
+} from "./features/magicCards/filtersSlice";
 
 function App() {
   const dispatch = useAppDispatch();
-  const [filters, setFilters] = useState(intialFilterState);
+  const filters = useAppSelector(SelectFilters);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +37,10 @@ function App() {
     body[0].style.background = currentTheme.background;
   }, [isDarkTheme]);
 
+  /**
+   * Handles the language change event on drop-down.
+   * @param language Selected Language on dropdown.
+   */
   const handleLanguageSelection = (language: string) => {
     setSelectedLanguage(language);
   };
@@ -43,22 +50,33 @@ function App() {
     changeSelectedLanguage: handleLanguageSelection,
   };
 
+  /**
+   * Handles the click event of search button in navigation bar.
+   * @param searchText The search text typed in search box
+   */
   const handleSearchButtonClick = (searchText: string) => {
     const newFilters = { ...filters };
     newFilters.searchText = searchText;
-    setFilters(newFilters);
+    dispatch(updateFilters(newFilters));
     dispatch(getCardsForDashboardAsync());
   };
 
   const siteNavBarPassThruProps = { handleSearchButtonClick };
 
+  /**
+   * Handles the click event on magic card name.
+   */
   const handleMagicCardClick = (id: string) => {
     setSelectedCardId(id);
   };
 
-  const handleSetFilters = (filters: DashboardFilters) => {
+  /**
+   * Handles the setting of new filter values.
+   * @param filters
+   */
+  const handleSetFilters = (newFilters: DashboardFilters) => {
     setCurrentPage(1);
-    setFilters(filters);
+    dispatch(updateFilters(newFilters));
   };
 
   const dashboardPassThruProps = {
