@@ -73,12 +73,12 @@ export default function Dashboard({
 
           {paginatedResult.length > 0 && (
             <div
-              className={`magicCardsGrid table-responsive border rounded-3 p-1 m-2 ${
+              className={`magicCardsGrid table-responsive border rounded-3  m-2 ${
                 isDark ? " border-light" : "border-dark"
               }`}
             >
               <table className={`table text-${isDark ? "light" : "dark"}`}>
-                <thead>
+                <thead className={`sticky-top bg-${isDark ? "dark" : "body"}`}>
                   <tr>
                     <th scope="col" className="col-md-1">
                       #

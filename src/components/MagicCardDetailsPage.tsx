@@ -56,25 +56,31 @@ const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
     const rarityStr = _cardDetails.rarity.replace(" ", "-").toLowerCase(); // "Basic Land" becomes "basic-land"
     const rarityClass = `magicCard-${rarityStr}`;
     return (
-      <div className="mw-100 row align-items-center justify-content-center text-center">
+      <div className="">
         <div className={isDark ? "detailsBox-dark" : "detailsBox-light"}>
-          <div className="image-box mt-2 mb-2">
-            <img
-              className={`image-field ${rarityClass}`}
-              src={_cardDetails.imageUrl}
-            />
-          </div>
+          <div className="d-flex column flex-wrap">
+            <div className="min-w-25 mw-50 ms-2 align-items-center justify-items-center">
+              <div className="image-box mt-2 mb-2">
+                <img
+                  className={`image-field ${rarityClass}`}
+                  src={_cardDetails.imageUrl}
+                />
+              </div>
+            </div>
 
-          <h2>{_cardDetails.name}</h2>
-          <h6>
-            <i>Artist : {_cardDetails.artist}</i>
-          </h6>
-          <h6>Power: {_cardDetails.power}</h6>
-          <h6>
-            <i>Rarity: {_cardDetails.rarity}</i>
-          </h6>
-          <h6>Toughness: {_cardDetails.toughness}</h6>
-          <h6>{_cardDetails.text}</h6>
+            <div className="w-75 ms-5 p-3">
+              <h2>{_cardDetails.name}</h2>
+              <h6>
+                <i>Artist : {_cardDetails.artist}</i>
+              </h6>
+              <h6>Power: {_cardDetails.power}</h6>
+              <h6>
+                <i>Rarity: {_cardDetails.rarity}</i>
+              </h6>
+              <h6>Toughness: {_cardDetails.toughness}</h6>
+              <p>{_cardDetails.text}</p>
+            </div>
+          </div>
         </div>
       </div>
     );
