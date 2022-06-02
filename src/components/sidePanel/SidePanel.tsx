@@ -32,7 +32,9 @@ export default function SidePanel(props: SidePanelProps) {
    * Applies the filters to data fetched, and brings the result.
    */
   const handleApplyClick = () => {
-    handleSetFilters(localFilters);
+    const newFilters = {...localFilters};
+    newFilters.searchText = filters.searchText;
+    handleSetFilters(newFilters);
   };
 
   /**

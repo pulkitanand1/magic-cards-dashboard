@@ -37,6 +37,7 @@ export default function Dashboard({
   const { selectedLanguage } = useContext(LanguageContext);
   const { isDark } = useContext(ThemeContext);
 
+  
   // Getting data post filteration.
   const magicCards = applyFilterOnMagicCards(
     useAppSelector(selectCards), // Magic Cards from state

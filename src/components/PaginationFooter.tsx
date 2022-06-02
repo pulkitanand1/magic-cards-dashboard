@@ -38,7 +38,7 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
     }
   };
   return (
-    <nav aria-label="..." data-testid="pagination-footer">
+    <nav aria-label="Pagination Footer" data-testid="pagination-footer">
       <ul className="pagination m-2">
         <li
           className={
@@ -47,13 +47,13 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
               : "page-item"
           }
         >
-          <a
+          <button
             data-testid="previous-page"
             className="page-link"
             onClick={() => handlePaginationButtonClick(-1)}
           >
             Previous
-          </a>
+          </button>
         </li>
 
         {[
@@ -65,12 +65,12 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
                   currentPage === pageNo ? "page-item active" : "page-item"
                 }
               >
-                <a
+                <button
                   className="page-link"
                   onClick={() => handlePaginationButtonClick(pageNo)}
                 >
                   {pageNo}
-                </a>
+                </button>
               </li>
             );
           }),
@@ -80,13 +80,13 @@ const PaginationFooter = (props: PaginatorFooterProps) => {
             currentPage === noOfPages ? "page-item disabled" : "page-item"
           }
         >
-          <a
+          <button
             data-testid="next-page"
             className="page-link"
             onClick={() => handlePaginationButtonClick(currentPage + 1)}
           >
             Next
-          </a>
+          </button>
         </li>
       </ul>
     </nav>

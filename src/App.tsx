@@ -37,6 +37,10 @@ function App() {
     body[0].style.background = currentTheme.background;
   }, [isDarkTheme]);
 
+  useEffect(() => {
+    dispatch(getCardsForDashboardAsync());
+  }, []); // Fetching data on load
+
   /**
    * Handles the language change event on drop-down.
    * @param language Selected Language on dropdown.
