@@ -37,7 +37,6 @@ export default function Dashboard({
   const { selectedLanguage } = useContext(LanguageContext);
   const { isDark } = useContext(ThemeContext);
 
-  
   // Getting data post filteration.
   const magicCards = applyFilterOnMagicCards(
     useAppSelector(selectCards), // Magic Cards from state
@@ -117,7 +116,11 @@ export default function Dashboard({
                           </Link>
                         </td>
                         <td>{card.colors}</td>
-                        <td>{card.supertypes === undefined ? "None" : card.supertypes}</td>
+                        <td>
+                          {card.supertypes === undefined
+                            ? "None"
+                            : card.supertypes}
+                        </td>
                         <td>{card.layout}</td>
                         <td>{card.rarity}</td>
                       </tr>

@@ -7,7 +7,9 @@ export const applyFilterOnMagicCards = (
   filters: DashboardFilters
 ) => {
   // Pure function, no data is being modified. A new array will be returned.
-  let _cards = [...cards].filter((card) => validateWithFilters(selectedLanguage, card, filters));
+  let _cards = [...cards].filter((card) =>
+    validateWithFilters(selectedLanguage, card, filters)
+  );
 
   _cards = _cards.map((card, idx) => {
     const _card = { ...card };
@@ -33,17 +35,21 @@ const validateWithFilters = (
   filters: DashboardFilters
 ): boolean => {
   let isValid = true;
-  const filterSuperType = filters.superType === "None" ? undefined : filters.superType;
-  let cardNameField = card.foreignNames?.find(fn => fn.language === selectedLanguage)?.name;
-  if(!cardNameField){
+  const filterSuperType =
+    filters.superType === "None" ? undefined : filters.superType;
+  let cardNameField = card.foreignNames?.find(
+    (fn) => fn.language === selectedLanguage
+  )?.name;
+  if (!cardNameField) {
     cardNameField = card.name;
   }
   isValid =
     card.foreignNames !== undefined &&
     (filters.searchText === "" ||
       filters.searchText === undefined ||
-      cardNameField.toLowerCase().indexOf(filters.searchText.toLowerCase(), 0) >=
-        0) &&
+      cardNameField
+        .toLowerCase()
+        .indexOf(filters.searchText.toLowerCase(), 0) >= 0) &&
     (filters.rarity === "All" || card.rarity === filters.rarity) &&
     (filters.superType === "All" ||
       card.supertypes?.some((superType) => filterSuperType === superType)) &&

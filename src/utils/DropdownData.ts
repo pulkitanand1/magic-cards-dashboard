@@ -8,7 +8,16 @@ const DropDownData = {
     "Japanese",
     "German",
   ],
-  superTypes: ["All", "Basic", "Host", "Legendary", "Ongoing", "Snow", "World", "None"],
+  superTypes: [
+    "All",
+    "Basic",
+    "Host",
+    "Legendary",
+    "Ongoing",
+    "Snow",
+    "World",
+    "None",
+  ],
 
   colors: ["White", "Blue"],
 
