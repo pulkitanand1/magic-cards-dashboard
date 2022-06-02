@@ -25,7 +25,6 @@ interface SidePanelProps {
  */
 export default function SidePanel(props: SidePanelProps) {
   const { filters, handleSetFilters } = { ...props };
-  const [isFilterModified, setisFilterModified] = useState(false);
   const [localFilters, setLocalFilters] = useState(filters); // Local state to be maintained to keep changes till apply button is clicked.
   const { superTypes, colors, rarityOptions, pageSizes } = DropDownData;
 
@@ -33,7 +32,6 @@ export default function SidePanel(props: SidePanelProps) {
    * Applies the filters to data fetched, and brings the result.
    */
   const handleApplyClick = () => {
-    setisFilterModified(false);
     handleSetFilters(localFilters);
   };
 
@@ -45,7 +43,6 @@ export default function SidePanel(props: SidePanelProps) {
     newFilterState.searchText = filters.searchText;
     setLocalFilters(newFilterState);
     handleSetFilters(newFilterState);
-    setisFilterModified(false);
   };
 
   /**
@@ -73,9 +70,6 @@ export default function SidePanel(props: SidePanelProps) {
       case "pageSize":
         newFilters.pageSize = parseInt(selectedItem);
         break;
-    }
-    if (!isFilterModified) {
-      setisFilterModified(true);
     }
     setLocalFilters(newFilters);
   };
@@ -125,7 +119,6 @@ export default function SidePanel(props: SidePanelProps) {
       <button
         data-testid="apply-button"
         className="btn btn-primary m-3 justify-content-center"
-        disabled={!isFilterModified}
         onClick={handleApplyClick}
       >
         Apply

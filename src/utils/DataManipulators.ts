@@ -32,6 +32,7 @@ const validateWithFilters = (
   filters: DashboardFilters
 ): boolean => {
   let isValid = true;
+  const filterSuperType = filters.superType === "None" ? undefined : filters.superType;
   isValid =
     card.foreignNames !== undefined &&
     (filters.searchText === "" ||
@@ -40,7 +41,7 @@ const validateWithFilters = (
         0) &&
     (filters.rarity === "All" || card.rarity === filters.rarity) &&
     (filters.superType === "All" ||
-      card.supertypes?.some((superType) => filters.superType === superType)) &&
+      card.supertypes?.some((superType) => filterSuperType === superType)) &&
     (filters.colors.length === 0 ||
       card.colors.some((color) => filters.colors.indexOf(color) >= 0));
   return isValid;

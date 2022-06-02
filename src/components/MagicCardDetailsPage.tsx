@@ -38,7 +38,7 @@ const MagiCardDetailsPage = (props: MagiCardDetailsPageProps) => {
         setIsFetchingCompleted(true);
       });
     }
-  }, [selectedCardId]);
+  }, []);
 
   /**
    * Actual component to be rendered when details are received.

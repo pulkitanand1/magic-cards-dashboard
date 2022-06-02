@@ -83,8 +83,14 @@ export default function Dashboard({
                     <th scope="col" className="col-md-1">
                       #
                     </th>
-                    <th scope="col" className="col-l">
+                    <th scope="col" className="col-md-3">
                       Name
+                    </th>
+                    <th scope="col" className="col-md-2">
+                      Color
+                    </th>
+                    <th scope="col" className="col-md-2">
+                      SuperType
                     </th>
                     <th scope="col" className="col-md-2">
                       Layout
@@ -109,6 +115,8 @@ export default function Dashboard({
                             {card.name}
                           </Link>
                         </td>
+                        <td>{card.colors}</td>
+                        <td>{card.supertypes === undefined ? "None" : card.supertypes}</td>
                         <td>{card.layout}</td>
                         <td>{card.rarity}</td>
                       </tr>
