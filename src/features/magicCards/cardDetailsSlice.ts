@@ -5,7 +5,7 @@ import { getCardDetailsAsync } from "./magicCardsAPI";
 
 export interface MagicCardDetailsState {
   value: MagicCardItem;
-  state: "idle" | "loading" | "failed";
+  status: "idle" | "loading" | "failed";
 }
 
 const initialState = {

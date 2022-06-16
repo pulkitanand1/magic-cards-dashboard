@@ -31,7 +31,7 @@
     "eject": "react-scripts eject",
     "generate-docs": "npx typedoc ./src",
     "generate-docs-watch": "npx typedoc ./src --watch",
-    "build-wp": "npx webpack build --config ./webpack.prod.js",
+    "build-wp-prod": "npx webpack build --config ./webpack.prod.js",
     "serve-wp": "npx webpack serve"
   },
   "eslintConfig": {

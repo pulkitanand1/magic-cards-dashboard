@@ -1,8 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
+import { DashboardFilters } from "../../dataTypes/DashboardFilters";
 import { intialFilterState } from "../../utils/DropdownData";
 
-const initialState = {
+export interface FiltersState {
+  value: DashboardFilters;
+  status: "idle" | "loading" | "failed";
+}
+
+const initialState : FiltersState = {
   value: intialFilterState,
   status: "idle",
 };

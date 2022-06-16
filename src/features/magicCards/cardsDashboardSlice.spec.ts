@@ -2,7 +2,7 @@ import cardsDashboardReducer, {
   CardsDashboardState,
 } from "./cardsDashboardSlice";
 
-describe("dashboard user", () => {
+describe("Cards dashboard slice is working.", () => {
   const initialState: CardsDashboardState = {
     value: [],
     status: "idle",

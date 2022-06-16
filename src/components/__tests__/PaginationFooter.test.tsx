@@ -37,8 +37,8 @@ describe("Pagination footer", () => {
       expect(allListElements[i]).toHaveTextContent(i.toString());
     }
     // Current page should be active.
-    expect(allListElements[1]).toHaveTextContent(currentPage.toString());
-    expect(allListElements[1]).toHaveClass("page-item active");
+    expect(allListElements[currentPage]).toHaveTextContent(currentPage.toString());
+    expect(allListElements[currentPage]).toHaveClass("page-item active");
   });
 
   it("page link button should set current page", () => {

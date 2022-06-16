@@ -31,7 +31,7 @@ describe("Checkbox side panel", () => {
     expect(checkBoxLabels[1].querySelector("input")).not.toBeChecked(); // Not selected value shouldn't be checked.
   });
 
-  it("Upon uncheck, should add value to checkedItems list ", () => {
+  it("Upon check, should add value to checkedItems list ", () => {
     let checkedValues: string[] = [];
     const mockHandleCheckedValues = jest.fn();
     mockHandleCheckedValues.mockImplementation((values: string[]) => {
@@ -59,7 +59,7 @@ describe("Checkbox side panel", () => {
     expect(checkedValues).toContain("value1"); // Check operation works!
   });
 
-  it("Upon check, should remove value from checkedItems list ", () => {
+  it("Upon uncheck, should remove value from checkedItems list ", () => {
     let checkedValues: string[] = [];
     const mockHandleCheckedValues = jest.fn();
     mockHandleCheckedValues.mockImplementation((values: string[]) => {

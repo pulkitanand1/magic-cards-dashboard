@@ -78,7 +78,7 @@ export default function Dashboard({
               }`}
             >
               <table className={`table text-${isDark ? "light" : "dark"}`}>
-                <thead className={`sticky-top bg-${isDark ? "dark" : "body"}`}>
+                <thead className={`bg-${isDark ? "dark" : "body"}`}>
                   <tr>
                     <th scope="col" className="col-md-1">
                       #
